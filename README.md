@@ -8,4 +8,4 @@ composer require spryker/propel
 
 ## Documentation
 
-[Documentation](http://spryker.github.io)
+[Propel Documentation](http://spryker.github.io/core/bundles/propel)

@@ -8,10 +8,10 @@
 namespace Spryker\Zed\Propel;
 
 use Spryker\Shared\Application\ApplicationConstants;
+use Spryker\Shared\Config\Config;
 use Spryker\Shared\Kernel\Store;
 use Spryker\Shared\Propel\PropelConstants;
 use Spryker\Zed\Kernel\AbstractBundleConfig;
-use Spryker\Zed\Propel\Business\Exception\UnSupportedDatabaseEngineException;
 
 class PropelConfig extends AbstractBundleConfig
 {
@@ -28,21 +28,13 @@ class PropelConfig extends AbstractBundleConfig
     }
 
     /**
-     * @return array
-     */
-    public function getPropelConfig()
-    {
-        return $this->get(PropelConstants::PROPEL);
-    }
-
-    /**
      * @throws \Exception
      *
      * @return string
      */
     public function getSchemaDirectory()
     {
-        $config = $this->getPropelConfig();
+        $config = Config::get(PropelConstants::PROPEL);
         $schemaDir = $config['paths']['schemaDir'] . DIRECTORY_SEPARATOR;
 
         return $schemaDir;
@@ -54,7 +46,7 @@ class PropelConfig extends AbstractBundleConfig
     public function getPropelSchemaPathPatterns()
     {
         return [
-            $this->get(ApplicationConstants::APPLICATION_SPRYKER_ROOT) . '/*/src/*/Zed/*/Persistence/Propel/Schema/',
+            Config::get(ApplicationConstants::APPLICATION_SPRYKER_ROOT) . '/*/src/*/Zed/*/Persistence/Propel/Schema/',
         ];
     }
 
@@ -71,21 +63,21 @@ class PropelConfig extends AbstractBundleConfig
      */
     public function getCurrentDatabaseEngine()
     {
-        return $this->get(PropelConstants::ZED_DB_ENGINE);
+        return $this->get(ApplicationConstants::ZED_DB_ENGINE);
     }
 
     /**
-     * @throws \Spryker\Zed\Propel\Business\Exception\UnSupportedDatabaseEngineException
+     * @throws \UnexpectedValueException
      *
      * @return string
      */
     public function getCurrentDatabaseEngineName()
     {
-        $dbEngine = $this->getCurrentDatabaseEngine();
-        $supportedEngines = $this->get(PropelConstants::ZED_DB_SUPPORTED_ENGINES);
+        $dbEngine = $this->get(ApplicationConstants::ZED_DB_ENGINE);
+        $supportedEngines = $this->get(ApplicationConstants::ZED_DB_SUPPORTED_ENGINES);
 
         if (!array_key_exists($dbEngine, $supportedEngines)) {
-            throw new UnSupportedDatabaseEngineException('Unsupported database engine: ' . $dbEngine);
+            throw new \UnexpectedValueException('Unsupported database engine: ' . $dbEngine);
         }
 
         return $supportedEngines[$dbEngine];

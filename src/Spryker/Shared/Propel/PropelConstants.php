@@ -29,8 +29,4 @@ interface PropelConstants
     const ZED_DB_ENGINE_MYSQL = ApplicationConstants::ZED_DB_ENGINE_MYSQL;
     const ZED_DB_ENGINE_PGSQL = ApplicationConstants::ZED_DB_ENGINE_PGSQL;
 
-    const ZED_DB_SUPPORTED_ENGINES = 'ZED_DB_SUPPORTED_ENGINES';
-
-    const USE_SUDO_TO_MANAGE_DATABASE = 'USE_SUDO_TO_MANAGE_DATABASE';
-
 }
